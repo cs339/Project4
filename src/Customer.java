@@ -1,37 +1,58 @@
+package hw2_sample;
+
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author thanhng
+ *
+ */
 public class Customer {
-    private String name;
-    private ArrayList<Rental> rentals = new ArrayList<Rental>();
-    
-    public Customer (String name) {
-        this.name = name;
-    }
-    
-    public void addRental(Rental arg) {
-        rentals.add(arg);
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void checkout() {
-    	Statement statement = new Statement();
-    	double totalAmount = 0;
-        int frequentRenterPoints = 0;
-        statement.addLine("Rental Record for " + getName());
-        for (Rental rental : rentals) {
-            double currentRentalAmount = 0;
-            currentRentalAmount += rental.getMovie().getPrice(rental.getDaysRented());
-            frequentRenterPoints+=rental.calcFrequentRenterPoints();
-            statement.addLine(rental.getMovie().getTitle() + "\t" + String.valueOf(currentRentalAmount));
-            totalAmount += currentRentalAmount;
-        }
-        statement.addLine("Amount owed is " + String.valueOf(totalAmount));
-        statement.addLine("You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points");
-        statement.printStatement();
-        statement.printHTMLStatement();
-    }
-    
+
+	private String name;
+	private ArrayList<Rental> rentalList;
+	private int preferredRenterPoints;
+	private double totalCost;
+	
+	public Customer(String name) {
+		this.name = name;
+		rentalList = new ArrayList<>();
+		preferredRenterPoints = 0;
+		totalCost = 0.0;
+	}
+	
+	/**
+	 * Update rental information for this customer each time s/he rents a new product
+	 * @param rental
+	 */
+	public void addRentalUnit(Rental rental) {
+		rentalList.add(rental);
+		totalCost = rental.getCost();
+		addPreferredRenterPoints(rental);
+	}
+	
+	/**
+	 * Prepare for the rental statement
+	 * @return
+	 */
+	public String getRentalStatement() {
+		StringBuilder statement = new StringBuilder();
+		
+		/* Get the summary for rental units of this customer */
+		for(Rental rental : rentalList) {
+			// calculate cost for each rental
+			
+			// append summary to statement
+		}
+		
+		return statement.toString();
+	}
+	
+	private void addPreferredRenterPoints(Rental rental) {
+		//
+		preferredRenterPoints ++;
+		
+		// Any bonus is also included
+		preferredRenterPoints += rental.calculateRentalBonusPoints();
+	}
 }

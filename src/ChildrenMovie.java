@@ -5,14 +5,17 @@ package hw2_sample;
  * @author thanhng
  *
  */
-public class RegularMovie extends Movie {
-
+public class ChildrenMovie extends Movie {
+	
 	/* */
 	private final int RENTAL_DURATION_LIMIT = 2;
 	private final double RENTAL_BASE_COST = 2;
 	private final double LATE_FEE = 1.5;
 	
-	public RegularMovie(String title) {
+	/**
+	 * 
+	 */
+	public ChildrenMovie(String title) {
 		super(title);
 	}
 	
@@ -26,4 +29,5 @@ public class RegularMovie extends Movie {
 		}
 		return rentalCost;
 	}
+
 }
