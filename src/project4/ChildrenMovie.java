@@ -1,19 +1,22 @@
-package hw2_sample;
+package project4;
 
 /**
  * 
  * @author thanhng
  *
  */
-public class RegularMovie extends Movie {
-
+public class ChildrenMovie extends Movie {
+	
 	/* */
 	private final int RENTAL_DURATION_LIMIT = 2;
 	private final double RENTAL_BASE_COST = 2;
 	private final double LATE_FEE = 1.5;
 	
-	public RegularMovie(String title) {
-		super(title);
+	/**
+	 * 
+	 */
+	public ChildrenMovie(String title, String category) {
+		super(title, category);
 	}
 	
 	@Override
@@ -25,5 +28,10 @@ public class RegularMovie extends Movie {
 			// do calculation here
 		}
 		return rentalCost;
+	}
+	
+	@Override
+	public double calculateSaleCost(){
+		return RENTAL_BASE_COST * 5; //TODO
 	}
 }

@@ -1,4 +1,4 @@
-package hw2_sample;
+package project4;
 
 import java.util.ArrayList;
 
@@ -32,6 +32,13 @@ public class Customer {
 	}
 	
 	/**
+	 * Update sale information for this customer each time s/he buys a new product
+	 */
+	public void addSaleUnit() {
+		//TODO
+	}
+	
+	/**
 	 * Prepare for the rental statement
 	 * @return
 	 */
@@ -55,4 +62,22 @@ public class Customer {
 		// Any bonus is also included
 		preferredRenterPoints += rental.calculateRentalBonusPoints();
 	}
+
+	public void checkout() {
+    	Statement statement = new Statement();
+    	double totalAmount = 0;
+        int frequentRenterPoints = 0;
+        statement.addLine("Rental Record for " + name);
+        for (Rental rental : rentalList) {
+            double currentRentalAmount = 0;
+            currentRentalAmount += rental.getCost();
+            frequentRenterPoints+=rental.calculateRentalBonusPoints();
+            statement.addLine(rental.getMovie().getTitle() + "\t" + String.valueOf(currentRentalAmount));
+            totalAmount += currentRentalAmount;
+        }
+        statement.addLine("Amount owed is " + String.valueOf(totalAmount));
+        statement.addLine("You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points");
+        statement.printStatement();
+        statement.printHTMLStatement();
+    }
 }

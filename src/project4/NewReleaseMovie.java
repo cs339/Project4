@@ -1,4 +1,4 @@
-package hw2_sample;
+package project4;
 
 /**
  * Although New Release is not really a category of movie (like Regular and Children,
@@ -10,13 +10,18 @@ public class NewReleaseMovie extends Movie {
 
 	private final double RENTAL_COST_MUL = 3;
 	
-	public NewReleaseMovie(String title) {
-		super(title);
+	public NewReleaseMovie(String title, String category) {
+		super(title, category);
 	}
 	
 	@Override
 	public double calculateRentalCost(int daysRented) {
 		return daysRented * RENTAL_COST_MUL;
+	}
+	
+	@Override
+	public double calculateSaleCost(){
+		return 0; //TODO
 	}
 
 }

@@ -1,20 +1,21 @@
-package hw2_sample;
+package project4;
 
-/** 
- * 
- * @author thanhng
- *
- */
-public abstract class Movie {
+public abstract class DVD {
 
 	private String title;
+	private String category;
 	
-	public Movie(String title) {
+	public DVD(String title, String category) {
 		this.title = title;
+		this.category = category;
 	}
 	
 	public String getTitle() {
 		return title;
+	}
+	
+	public String getCategory() {
+		return category;
 	}
 	
 	/**
@@ -24,4 +25,6 @@ public abstract class Movie {
 	 * @return rental cost
 	 */
 	public abstract double calculateRentalCost(int daysRented);
+	
+	public abstract double calculateSaleCost();
 }
