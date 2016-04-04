@@ -11,12 +11,14 @@ public class Customer {
 
 	private String name;
 	private ArrayList<Rental> rentalList;
+	private ArrayList<Rental> saleList;
 	private int preferredRenterPoints;
 	private double totalCost;
 	
 	public Customer(String name) {
 		this.name = name;
 		rentalList = new ArrayList<>();
+		saleList = new ArrayList<>();
 		preferredRenterPoints = 0;
 		totalCost = 0.0;
 	}
@@ -27,15 +29,16 @@ public class Customer {
 	 */
 	public void addRentalUnit(Rental rental) {
 		rentalList.add(rental);
-		totalCost = rental.getCost();
+		totalCost += rental.getCost();
 		addPreferredRenterPoints(rental);
 	}
 	
 	/**
 	 * Update sale information for this customer each time s/he buys a new product
 	 */
-	public void addSaleUnit() {
-		//TODO
+	public void addSaleUnit(Rental rental) {
+		saleList.add(rental);
+		totalCost += rental.getCost();
 	}
 	
 	/**
@@ -67,7 +70,7 @@ public class Customer {
     	Statement statement = new Statement();
     	double totalAmount = 0;
         int frequentRenterPoints = 0;
-        statement.addLine("Rental Record for " + name);
+        statement.addLine("Record for " + name);
         for (Rental rental : rentalList) {
             double currentRentalAmount = 0;
             currentRentalAmount += rental.getCost();
@@ -75,6 +78,14 @@ public class Customer {
             statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentRentalAmount));
             totalAmount += currentRentalAmount;
         }
+
+        for (Rental rental : saleList) {
+            double currentSaleAmount = 0;
+            currentSaleAmount += rental.getSaleCost();
+            statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentSaleAmount));
+            totalAmount += currentSaleAmount;
+        }
+          
         statement.addLine("Amount owed is " + String.valueOf(totalAmount));
         statement.addLine("You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points");
         statement.printStatement();

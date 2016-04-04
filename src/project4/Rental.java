@@ -35,6 +35,15 @@ public class Rental {
 		return this.renting.calculateRentalCost(rentalDuration);
 	}
 	
+	
+	/**
+	 * This calculates the sale cost for this rental unit
+	 * @return
+	 */
+	public double getSaleCost() {
+		return this.renting.calculateSaleCost();
+	}
+	
 	/**
 	 * This calculates frequent points for the rental of release movie with duration of more than 2 days
 	 * @return bonus points

@@ -21,7 +21,7 @@ public class NewReleaseMovie extends Movie {
 	
 	@Override
 	public double calculateSaleCost(){
-		return 0; //TODO
+		return 20; //TODO
 	}
 
 }
