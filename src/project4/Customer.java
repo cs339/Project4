@@ -72,7 +72,7 @@ public class Customer {
             double currentRentalAmount = 0;
             currentRentalAmount += rental.getCost();
             frequentRenterPoints+=rental.calculateRentalBonusPoints();
-            statement.addLine(rental.getMovie().getTitle() + "\t" + String.valueOf(currentRentalAmount));
+            statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentRentalAmount));
             totalAmount += currentRentalAmount;
         }
         statement.addLine("Amount owed is " + String.valueOf(totalAmount));

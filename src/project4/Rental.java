@@ -1,31 +1,26 @@
 package project4;
 
-/**
- * 
- * @author thanhng
- *
- */
 public class Rental {
 	
 	private final int RENTAL_BONUS_POINT = 1;
+	
 	private final int MIN_DURANTION_FOR_BONUS = 2;
 	
-	private Movie movie;
-	// number of days the movie has been rented
+	private Rentable renting;
+
 	private int rentalDuration;
 	
 	/**
-	 * 
 	 * @param movie
 	 * @param duration
 	 */
-	public Rental(Movie movie, int duration) {
-		this.movie = movie;
+	public Rental(Rentable renting, int duration) {
+		this.renting = renting;
 		this.rentalDuration = duration;
 	}
 	
-	public Movie getMovie() {
-		return movie;
+	public Rentable getRenting() {
+		return this.renting;
 	}
 	
 	public int getRentalDuration() {
@@ -37,7 +32,7 @@ public class Rental {
 	 * @return
 	 */
 	public double getCost() {
-		return movie.calculateRentalCost(rentalDuration);
+		return this.renting.calculateRentalCost(rentalDuration);
 	}
 	
 	/**
@@ -46,13 +41,15 @@ public class Rental {
 	 */
 	public int calculateRentalBonusPoints() {
 		int bonus = 0;
-		if(movie instanceof NewReleaseMovie && rewardEgligble())
-			bonus = RENTAL_BONUS_POINT;
-		
+		if(this.renting instanceof Movie) {
+			if(this.renting instanceof NewReleaseMovie && rewardEligible()) {
+				bonus = RENTAL_BONUS_POINT;
+			}
+		}
 		return bonus;
 	}
 	
-	public boolean rewardEgligble() {
+	public boolean rewardEligible() {
 		return (rentalDuration >= MIN_DURANTION_FOR_BONUS);
 	}
 

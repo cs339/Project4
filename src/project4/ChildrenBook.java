@@ -1,14 +1,14 @@
 package project4;
 
-public class ChildrenMovie extends Movie {
+public class ChildrenBook extends Book {
 	
-	/* Custom Pricing For ChildrenMovie */
+	/* Custom Pricing For ChildrenBook */
 	
 	private final int RENTAL_DURATION_LIMIT = 2;
 	private final double RENTAL_BASE_COST = 2;
 	private final double LATE_FEE = 1.5;
 	
-	public ChildrenMovie(String title) {
+	public ChildrenBook(String title) {
 		super(title);
 	}
 	
@@ -23,7 +23,7 @@ public class ChildrenMovie extends Movie {
 	
 	@Override
 	public double calculateSaleCost() {
-		return RENTAL_BASE_COST * 5;
+		return RENTAL_BASE_COST * 5; //TODO
 	}
 	
 }

@@ -10,8 +10,8 @@ public class NewReleaseMovie extends Movie {
 
 	private final double RENTAL_COST_MUL = 3;
 	
-	public NewReleaseMovie(String title, String category) {
-		super(title, category);
+	public NewReleaseMovie(String title) {
+		super(title);
 	}
 	
 	@Override
