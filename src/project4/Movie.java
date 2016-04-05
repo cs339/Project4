@@ -6,8 +6,4 @@ public abstract class Movie extends Rentable {
 		super(title);
 	}
 	
-	public abstract double calculateRentalCost(int daysRented);
-	
-	public abstract double calculateSaleCost();
-	
 }

@@ -38,7 +38,27 @@ public class Customer {
 	 */
 	public void addSaleUnit(Rental rental) {
 		saleList.add(rental);
-		totalCost += rental.getCost();
+		totalCost += rental.getSaleCost();
+	}
+	
+	private Statement generateStatement() {
+		Statement statement = new Statement();
+        statement.addLine("Record for " + name);
+        for (Rental rental : rentalList) {
+            double currentRentalAmount = 0;
+            currentRentalAmount += rental.getCost();
+            statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentRentalAmount));
+        }
+
+        for (Rental rental : saleList) {
+            double currentSaleAmount = 0;
+            currentSaleAmount += rental.getSaleCost();
+            statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentSaleAmount));
+        }
+          
+        statement.addLine("Amount owed is " + String.valueOf(totalCost));
+        statement.addLine("You earned " + String.valueOf(preferredRenterPoints) + " frequent renter points");
+        return statement;
 	}
 	
 	/**
@@ -46,48 +66,19 @@ public class Customer {
 	 * @return
 	 */
 	public String getRentalStatement() {
-		StringBuilder statement = new StringBuilder();
-		
-		/* Get the summary for rental units of this customer */
-		for(Rental rental : rentalList) {
-			// calculate cost for each rental
-			
-			// append summary to statement
-		}
-		
-		return statement.toString();
+		return generateStatement().toString();
 	}
 	
 	private void addPreferredRenterPoints(Rental rental) {
 		//
-		preferredRenterPoints ++;
+		preferredRenterPoints += totalCost / 5;
 		
 		// Any bonus is also included
 		preferredRenterPoints += rental.calculateRentalBonusPoints();
 	}
 
 	public void checkout() {
-    	Statement statement = new Statement();
-    	double totalAmount = 0;
-        int frequentRenterPoints = 0;
-        statement.addLine("Record for " + name);
-        for (Rental rental : rentalList) {
-            double currentRentalAmount = 0;
-            currentRentalAmount += rental.getCost();
-            frequentRenterPoints+=rental.calculateRentalBonusPoints();
-            statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentRentalAmount));
-            totalAmount += currentRentalAmount;
-        }
-
-        for (Rental rental : saleList) {
-            double currentSaleAmount = 0;
-            currentSaleAmount += rental.getSaleCost();
-            statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentSaleAmount));
-            totalAmount += currentSaleAmount;
-        }
-          
-        statement.addLine("Amount owed is " + String.valueOf(totalAmount));
-        statement.addLine("You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points");
+		Statement statement = generateStatement();
         statement.printStatement();
         statement.printHTMLStatement();
     }

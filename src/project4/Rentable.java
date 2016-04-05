@@ -3,6 +3,9 @@ package project4;
 public abstract class Rentable {
 	
 	public String title;
+	protected int rentalDurationLimit;
+	protected double rentalBaseCost;
+	protected double lateFee;
 	
 	public Rentable(String title) {
 		this.title = title;
@@ -25,7 +28,13 @@ public abstract class Rentable {
 	 * @return rental cost
 	 */
 	
-	public abstract double calculateRentalCost(int daysRented);
+	public double calculateRentalCost(int daysRented) {
+		double rentalCost = rentalBaseCost * daysRented;
+		if(daysRented > rentalDurationLimit) {
+			rentalCost += lateFee * (daysRented - rentalDurationLimit);
+		}
+		return rentalCost;
+	}
 	
 	/**
 	 * Calculates cost of buying item
@@ -33,6 +42,8 @@ public abstract class Rentable {
 	 * @return rental cost
 	 */
 	
-	public abstract double calculateSaleCost();
-	
+	public double calculateSaleCost() {
+		return rentalBaseCost * 5;
+	}
+
 }
