@@ -12,15 +12,17 @@ public class Customer {
 	private String name;
 	private ArrayList<Rental> rentalList;
 	private ArrayList<Rental> saleList;
-	private int preferredRenterPoints;
+	private int frequentRenterPoints;
 	private double totalCost;
+	private int age;
 	
-	public Customer(String name) {
+	public Customer(String name, int age) {
 		this.name = name;
-		rentalList = new ArrayList<>();
-		saleList = new ArrayList<>();
-		preferredRenterPoints = 0;
-		totalCost = 0.0;
+		this.age = age;
+		this.rentalList = new ArrayList<>();
+		this.saleList = new ArrayList<>();
+		this.frequentRenterPoints = 0;
+		this.totalCost = 0.0;
 	}
 	
 	/**
@@ -30,7 +32,7 @@ public class Customer {
 	public void addRentalUnit(Rental rental) {
 		rentalList.add(rental);
 		totalCost += rental.getCost();
-		addPreferredRenterPoints(rental);
+		addFrequentRenterPoints(rental);
 	}
 	
 	/**
@@ -44,20 +46,22 @@ public class Customer {
 	private Statement generateStatement() {
 		Statement statement = new Statement();
         statement.addLine("Record for " + name);
-        for (Rental rental : rentalList) {
-            double currentRentalAmount = 0;
-            currentRentalAmount += rental.getCost();
+        for(Rental rental : rentalList) {
+            double currentRentalAmount = rental.getCost();
             statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentRentalAmount));
         }
-
-        for (Rental rental : saleList) {
+        ArrayList<Rental> movieList = new ArrayList<Rental>();
+        for(Rental rental : rentalList) {
+        	if(rental.getRenting() instanceof Movie) movieList.add(rental);
+        }
+        addBonusFrequentRenterPoints(movieList);
+        for(Rental rental : saleList) {
             double currentSaleAmount = 0;
             currentSaleAmount += rental.getSaleCost();
             statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentSaleAmount));
         }
-          
         statement.addLine("Amount owed is " + String.valueOf(totalCost));
-        statement.addLine("You earned " + String.valueOf(preferredRenterPoints) + " frequent renter points");
+        statement.addLine("You earned " + String.valueOf(this.frequentRenterPoints) + " frequent renter points");
         return statement;
 	}
 	
@@ -69,12 +73,23 @@ public class Customer {
 		return generateStatement().toString();
 	}
 	
-	private void addPreferredRenterPoints(Rental rental) {
-		//
-		preferredRenterPoints += totalCost / 5;
-		
-		// Any bonus is also included
-		preferredRenterPoints += rental.calculateRentalBonusPoints();
+	private void addFrequentRenterPoints(Rental rental) {
+		this.frequentRenterPoints += Math.round(rental.getCost() / 5);
+	}
+	
+	private void addBonusFrequentRenterPoints(ArrayList<Rental> movieList) {
+		RenterPoints pointsAge = new RenterPointsByAge();
+		RenterPoints pointsCategory = new RenterPointsByCategory();
+		RenterPoints pointsDuration = new RenterPointsByDuration();
+		if(pointsAge.rewardEligible(movieList, this.age)) {
+			this.frequentRenterPoints = pointsAge.calculatePoints(movieList, this.frequentRenterPoints);
+		}
+		if(pointsCategory.rewardEligible(movieList, this.age)) {
+			this.frequentRenterPoints = pointsCategory.calculatePoints(movieList, this.frequentRenterPoints);
+		}
+		if(pointsDuration.rewardEligible(movieList, this.age)) {
+			this.frequentRenterPoints += pointsDuration.calculatePoints(movieList, this.frequentRenterPoints);
+		}
 	}
 
 	public void checkout() {

@@ -13,7 +13,7 @@ public class runner {
 		Rental thirdRental = new Rental(thirdMovie, 2);
 		Rental fourthRental = new Rental(b1, 5);
 		
-		Customer customer = new Customer("Joe");
+		Customer customer = new Customer("Joe", 21);
 		
 		customer.addRentalUnit(firstRental);
 		customer.addRentalUnit(secondRental);

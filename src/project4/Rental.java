@@ -45,21 +45,19 @@ public class Rental {
 	}
 	
 	/**
-	 * This calculates frequent points for the rental of release movie with duration of more than 2 days
-	 * @return bonus points
+	 * This returns the bonus point
+	 * @return
 	 */
-	public int calculateRentalBonusPoints() {
-		int bonus = 0;
-		if(this.renting instanceof Movie) {
-			if(this.renting instanceof NewReleaseMovie && rewardEligible()) {
-				bonus = RENTAL_BONUS_POINT;
-			}
-		}
-		return bonus;
+	public int getBonusRental() {
+		return this.RENTAL_BONUS_POINT;
 	}
 	
-	public boolean rewardEligible() {
-		return (rentalDuration >= MIN_DURANTION_FOR_BONUS);
+	/**
+	 * This is the minimum duration for bonus
+	 * @return
+	 */
+	public int getMinDuration() {
+		return this.MIN_DURANTION_FOR_BONUS;
 	}
 
 }
