@@ -16,6 +16,7 @@ public class Customer {
 	private double totalCost;
 	private double discount;
 	private int age;
+	private RentalObserver rentalObserver;
 	
 	public Customer(String name, int age) {
 		this.name = name;
@@ -24,6 +25,7 @@ public class Customer {
 		this.saleList = new ArrayList<>();
 		this.frequentRenterPoints = 0;
 		this.totalCost = 0.0;
+		this.discount = 0.0;
 	}
 	
 	/**
@@ -31,8 +33,10 @@ public class Customer {
 	 * @param rental
 	 */
 	public void addRentalUnit(Rental rental) {
+		rentalObserver.addRental();
 		rentalList.add(rental);
-		totalCost += rental.getCost();
+		totalCost += (rental.getCost() * rentalObserver.getDiscount());
+		discount += (rental.getCost() *(1 - rentalObserver.getDiscount()));
 		addFrequentRenterPoints(rental);
 	}
 	
@@ -40,15 +44,20 @@ public class Customer {
 	 * Update sale information for this customer each time s/he buys a new product
 	 */
 	public void addSaleUnit(Rental rental) {
+		rentalObserver.addRental();
 		saleList.add(rental);
-		totalCost += rental.getSaleCost();
+		totalCost += (rental.getSaleCost() * rentalObserver.getDiscount());
+		discount += (rental.getSaleCost() *(1 - rentalObserver.getDiscount()));
 	}
 	
 	private Statement generateStatement() {
 		Statement statement = new Statement();
         statement.addLine("Record for " + name);
+        rentalObserver.resetRentals();
         for(Rental rental : rentalList) {
-            double currentRentalAmount = rental.getCost();
+        	rentalObserver.addRental();
+        	double currentRentalAmount = (rental.getSaleCost() * rentalObserver.getDiscount());
+            //double currentRentalAmount = rental.getCost();
             statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentRentalAmount));
         }
         ArrayList<Rental> movieList = new ArrayList<Rental>();
@@ -58,21 +67,23 @@ public class Customer {
         addBonusFrequentRenterPoints(movieList);
         for(Rental rental : saleList) {
             double currentSaleAmount = 0;
-            currentSaleAmount += rental.getSaleCost();
+            rentalObserver.addRental();
+            currentSaleAmount += (rental.getSaleCost() * rentalObserver.getDiscount());
+            //currentSaleAmount += rental.getSaleCost();
             statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentSaleAmount));
         }
         
-        double purchaseDiscount = 0;
+        /*double purchaseDiscount = 0;
         if(rentalList.size() >= 3 && rentalList.size() <= 5) purchaseDiscount = 0.2;
         else if(rentalList.size() > 5) purchaseDiscount = 0.5;
         for(Rental sale : saleList){
         	discount += sale.getSaleCost()*purchaseDiscount;
-        }
+        }*/
         
         
-        statement.addLine("Subtotal is " + String.valueOf(totalCost));
+        statement.addLine("Subtotal is " + String.valueOf(totalCost + discount));
         statement.addLine("Discount is " + String.valueOf(discount));
-        statement.addLine("Amount owed is " + String.valueOf(totalCost - discount));
+        statement.addLine("Amount owed is " + String.valueOf(totalCost));// - discount));
         statement.addLine("You earned " + String.valueOf(this.frequentRenterPoints) + " frequent renter points");
         return statement;
 	}
@@ -86,7 +97,7 @@ public class Customer {
 	}
 	
 	private void addFrequentRenterPoints(Rental rental) {
-		this.frequentRenterPoints += Math.round(rental.getCost() / 5);
+		this.frequentRenterPoints += Math.round((rental.getCost() * rentalObserver.getDiscount()) / 5);
 	}
 	
 	private void addBonusFrequentRenterPoints(ArrayList<Rental> movieList) {
@@ -109,4 +120,8 @@ public class Customer {
         statement.printStatement();
         statement.printHTMLStatement();
     }
+	
+	public void attachObserver(RentalObserver observer){
+		this.rentalObserver = observer;
+	}
 }

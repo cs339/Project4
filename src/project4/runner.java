@@ -14,6 +14,8 @@ public class runner {
 		Rental fourthRental = new Rental(b1, 5);
 		
 		Customer customer = new Customer("Joe", 21);
+		customer.attachObserver(new DiscountObserver(customer));
+		
 		
 		customer.addRentalUnit(firstRental);
 		customer.addRentalUnit(secondRental);
