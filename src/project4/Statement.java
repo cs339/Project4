@@ -25,13 +25,15 @@ public class Statement {
 		System.out.println("<html>");
 		System.out.println(statementLine1 + "<span>" + lines.get(0) + "</span>");
 		System.out.println(statementLine1 + "<table>");
-		for (int i = 1; i < lines.size() - 2; i++) {
+		for (int i = 1; i < lines.size() - 4; i++) {
 			System.out.println(statementLine2 + "<tr>");
 			System.out.println(statementLine3 + "<td>" + lines.get(i).split("\t")[0] + "</td>");
 			System.out.println(statementLine3 + "<td>" + lines.get(i).split("\t")[1] + "</td>");
 			System.out.println(statementLine2 + "</tr>");
 		}
 		System.out.println(statementLine1 + "</table>");
+		System.out.println(statementLine1 + "<span>" + lines.get(lines.size() - 4) + "</span>");
+		System.out.println(statementLine1 + "<span>" + lines.get(lines.size() - 3) + "</span>");
 		System.out.println(statementLine1 + "<span>" + lines.get(lines.size() - 2) + "</span>");
 		System.out.println(statementLine1 + "<span>" + lines.get(lines.size() - 1) + "</span>");
 		System.out.println("</html>");

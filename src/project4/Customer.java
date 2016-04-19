@@ -14,6 +14,7 @@ public class Customer {
 	private ArrayList<Rental> saleList;
 	private int frequentRenterPoints;
 	private double totalCost;
+	private double discount;
 	private int age;
 	
 	public Customer(String name, int age) {
@@ -60,7 +61,18 @@ public class Customer {
             currentSaleAmount += rental.getSaleCost();
             statement.addLine(rental.getRenting().getTitle() + "\t" + String.valueOf(currentSaleAmount));
         }
-        statement.addLine("Amount owed is " + String.valueOf(totalCost));
+        
+        double purchaseDiscount = 0;
+        if(rentalList.size() >= 3 && rentalList.size() <= 5) purchaseDiscount = 0.2;
+        else if(rentalList.size() > 5) purchaseDiscount = 0.5;
+        for(Rental sale : saleList){
+        	discount += sale.getSaleCost()*purchaseDiscount;
+        }
+        
+        
+        statement.addLine("Subtotal is " + String.valueOf(totalCost));
+        statement.addLine("Discount is " + String.valueOf(discount));
+        statement.addLine("Amount owed is " + String.valueOf(totalCost - discount));
         statement.addLine("You earned " + String.valueOf(this.frequentRenterPoints) + " frequent renter points");
         return statement;
 	}
